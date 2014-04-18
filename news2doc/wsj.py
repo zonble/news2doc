@@ -64,9 +64,9 @@ class WSJ:
 			try:
 				articles = self._fetch_articles_in_24hours(url)
 				all_articles += articles
-				print('...Done')
+				print('...Done.')
 			except Exception as e:
-				print('...Failed')
+				print('...Failed. ' + str(e))
 
 		for article in all_articles:
 			link = article['link']
@@ -75,5 +75,5 @@ class WSJ:
 				text = self.fetch_article(link)
 				article['text'] = text
 			except Exception as e:
-				print '...Failed'
+				print('...Failed. ' + str(e))
 		return all_articles

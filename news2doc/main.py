@@ -3,6 +3,7 @@
 
 from wsj import *
 from ft import *
+from nyt import *
 from docx import *
 
 def make_doc(articles):
@@ -26,9 +27,12 @@ def make_doc(articles):
 
 def main():
 	articles = []
-	# articles += WSJ().fetch_all_articles_in_24hours()
-	articles += FinancialTimes().fetch_all_articles_in_24hours()
-	# print articles
+	# try: articles += WSJ().fetch_all_articles_in_24hours()
+	# except: pass
+	try: articles += FinancialTimes().fetch_all_articles_in_24hours()
+	except: pass
+	try: articles += NewYorkTimes().fetch_all_articles_in_24hours()
+	except: pass
 	make_doc(articles)
 
 if __name__ == '__main__':

@@ -61,9 +61,9 @@ class FinancialTimes:
 				print('Fetching RSS feed from ' + url)
 				articles = self._fetch_articles_in_24hours(url)
 				all_articles += articles
-				print('...Done')
+				print('...Done.')
 			except Exception as e:
-				print('...Failed')
+				print('...Failed. ' + str(e))
 
 		for article in all_articles:
 			link = article['link']
@@ -71,7 +71,7 @@ class FinancialTimes:
 				print('Fetching article from ' + link)
 				text = self.fetch_article(link)
 				article['text'] = text
-				print('...Done')
+				print('...Done.')
 			except Exception as e:
-				print('...Failed' + str(e))
+				print('...Failed. ' + str(e))
 		return all_articles
