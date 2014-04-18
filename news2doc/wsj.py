@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import urllib
-import urllib2
-import datetime
+import urllib2, datetime, re
+import utils
 import xml.etree.ElementTree as ET
-import re
 
 class WSJ:
 	# RSS = [
@@ -23,9 +21,7 @@ class WSJ:
 	RSS = ['http://cn.wsj.com/big5/rss02.xml']
 
 	def _fetch_articles_in_24hours(self, url):
-		print url
-		now = datetime.datetime.now()
-		yesterday = now - datetime.timedelta(days=1)
+		yesterday = utils.yesterday()
 		articles = []
 		response = urllib2.urlopen(url).read()
 		response = response.decode('big5').encode('utf-8')
@@ -56,8 +52,7 @@ class WSJ:
 		response = response.decode('big5', 'ignore').encode('utf-8')
 		pattern = r'<!content_tag txt>(.*)<!/content_tag txt>'
 		content = re.findall(pattern, response, re.MULTILINE)
-		if len(content) < 0:
-			return
+		if len(content) < 1: return
 		text = content[0]
 		text = format_text(text).split('\n')
 		return text
@@ -65,11 +60,20 @@ class WSJ:
 	def fetch_all_articles_in_24hours(self):
 		all_articles = []
 		for url in WSJ.RSS:
-			articles = self._fetch_articles_in_24hours(url)
-			all_articles += articles
+			print('Fetching RSS feed from ' + url)
+			try:
+				articles = self._fetch_articles_in_24hours(url)
+				all_articles += articles
+				print('...Done')
+			except Exception as e:
+				print('...Failed')
+
 		for article in all_articles:
 			link = article['link']
-			print link
-			text = self.fetch_article(link)
-			article['text'] = text
+			try:
+				print('Fetching article from ' + link)
+				text = self.fetch_article(link)
+				article['text'] = text
+			except Exception as e:
+				print '...Failed'
 		return all_articles
