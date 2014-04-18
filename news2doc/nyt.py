@@ -6,7 +6,14 @@ import utils
 import xml.etree.ElementTree as ET
 
 class NewYorkTimes:
+	'A class for helping fetching news from The New York Times Chinese. '
+
 	def fetch_all_articles_in_24hours(self):
+		'''
+		Fetch all articles within 24 hours from the RSS feed of The New York
+		Times.
+		'''
+
 		url = 'http://cn.nytimes.com/rss/zh-hant/'
 		print('Fetching RSS feed from ' + url)
 		try:
@@ -35,9 +42,10 @@ class NewYorkTimes:
 			if publish_date > yesterday:
 				text = find('description')
 				text = format_text(text).split('\n')
-				article = {'link':find('link'),
-						   'title':find('title'),
-						   'text':text,
-						   'publish_date':publish_date}
+				article = {'link': find('link'),
+						   'title': find('title'),
+						   'text': text,
+						   'publish_date': publish_date,
+						   'source': 'The New York Times Chinese'}
 				articles.append(article)
 		return articles

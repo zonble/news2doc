@@ -6,6 +6,8 @@ import utils
 import xml.etree.ElementTree as ET
 
 class FinancialTimes:
+	'A class for helping fetching news from The Financial Times Chinese. '
+
 	# RSS = ['http://www.ftchinese.com/rss/feed', #每日更新
 	# 	   'http://www.ftchinese.com/rss/news', #今日焦點
 	# 	   'http://www.ftchinese.com/rss/hotstoryby7day', #十大熱門文章
@@ -55,6 +57,11 @@ class FinancialTimes:
 		return text
 
 	def fetch_all_articles_in_24hours(self):
+		'''
+		Fetch all articles within 24 hours from the RSS feed of The
+		Financial Times Chinese.
+		'''
+
 		all_articles = []
 		for url in FinancialTimes.RSS:
 			try:

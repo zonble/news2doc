@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
 import datetime
 
 class ESTTimeZone(datetime.tzinfo):

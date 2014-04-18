@@ -4,9 +4,15 @@
 from wsj import *
 from ft import *
 from nyt import *
+
+# Use pip install python-docx to install dependency.
+# https://python-docx.readthedocs.org/en/latest/
 from docx import *
 
 def make_doc(articles):
+	'''
+	Make Microsoft Word document from fetched articles.
+	'''
 	print 'makeing .docx file.'
 
 	document = Document()
@@ -19,7 +25,10 @@ def make_doc(articles):
 		text = article['text']
 		if not text: return
 		for line in text:
-			# line = line.strip().decode('utf-8', 'ignore')
+			try:
+				line = line.decode('utf-8', 'ignore')
+			except:
+				pass
 			line = line.strip()
 			if len(line):
 				document.add_paragraph(line)
@@ -27,8 +36,8 @@ def make_doc(articles):
 
 def main():
 	articles = []
-	# try: articles += WSJ().fetch_all_articles_in_24hours()
-	# except: pass
+	try: articles += WSJ().fetch_all_articles_in_24hours()
+	except: pass
 	try: articles += FinancialTimes().fetch_all_articles_in_24hours()
 	except: pass
 	try: articles += NewYorkTimes().fetch_all_articles_in_24hours()

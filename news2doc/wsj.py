@@ -6,6 +6,8 @@ import utils
 import xml.etree.ElementTree as ET
 
 class WSJ:
+	'A class for helping fetching articles from The Wall Street Journal.'
+
 	# RSS = [
 	# 	'http://cn.wsj.com/big5/rss02.xml', # 特寫
 	# 	'http://cn.wsj.com/big5/rssbch.xml', # 中港台
@@ -35,9 +37,10 @@ class WSJ:
 			publish_date = datetime.datetime.\
 						   strptime(publish_date_txt, "%Y/%m/%d %H:%M:%S")
 			if publish_date > yesterday:
-				article = {'link':find('link'),
-						   'title':find('title'),
-						   'publish_date':publish_date}
+				article = {'link': find('link'),
+						   'title': find('title'),
+						   'publish_date': publish_date,
+						   'source': 'The Wall Street Journal Chinese'}
 				articles.append(article)
 		return articles
 
@@ -58,6 +61,11 @@ class WSJ:
 		return text
 
 	def fetch_all_articles_in_24hours(self):
+		'''
+		Fetch all articles within 24 hours from the RSS feed of The
+		Wall Street Journal Chinese.
+		'''
+
 		all_articles = []
 		for url in WSJ.RSS:
 			print('Fetching RSS feed from ' + url)
@@ -74,6 +82,7 @@ class WSJ:
 				print('Fetching article from ' + link)
 				text = self.fetch_article(link)
 				article['text'] = text
+				print('...Done.')
 			except Exception as e:
 				print('...Failed. ' + str(e))
 		return all_articles
