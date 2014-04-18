@@ -13,7 +13,7 @@ def make_doc(articles):
 	'''
 	Make Microsoft Word document from fetched articles.
 	'''
-	print 'makeing .docx file.'
+	print 'Making .docx file...'
 
 	document = Document()
 	for article in articles:
@@ -32,7 +32,11 @@ def make_doc(articles):
 			line = line.strip()
 			if len(line):
 				document.add_paragraph(line)
+		document.add_paragraph()
+
 	document.save('news.docx')
+	print('...Done.')
+
 
 def main():
 	articles = []

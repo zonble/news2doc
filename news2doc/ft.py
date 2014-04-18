@@ -4,6 +4,10 @@
 import urllib2, datetime, re
 import utils
 import xml.etree.ElementTree as ET
+try:
+	import jianfan
+except:
+	pass
 
 class FinancialTimes:
 	'A class for helping fetching news from The Financial Times Chinese. '
@@ -21,6 +25,15 @@ class FinancialTimes:
 	# ]
 	RSS = ['http://www.ftchinese.com/rss/feed']
 
+	def _jtof(self, text=''):
+		try:
+			text = jianfan.jtof(text)
+			text = text.replace(u'“', u'「');
+			text = text.replace(u'”', u'」');
+		except Exception as e:
+			pass
+		return text
+
 	def _fetch_articles_in_24hours(self, url):
 		print url
 		yesterday = utils.yesterday()
@@ -34,9 +47,11 @@ class FinancialTimes:
 			publish_date = datetime.datetime.\
 						   strptime(publish_date_txt, "%a, %d %b %Y %H:%M:%S %Z")
 			if publish_date > yesterday:
-				article = {'link':find('link') + '?full=y',
-						   'title':find('title'),
-						   'publish_date':publish_date}
+				title = find('title')
+				title = self._jtof(title)
+				article = {'link': find('link') + '?full=y',
+						   'title': title,
+						   'publish_date': publish_date}
 				articles.append(article)
 		return articles
 
@@ -53,6 +68,7 @@ class FinancialTimes:
 		content = re.findall(pattern, response, re.MULTILINE)
 		if len(content) < 1: return
 		text = content[0]
+		text = self._jtof(text)
 		text = format_text(text).split('\n')
 		return text
 
